@@ -1,0 +1,95 @@
+#searchfield {
+    
+    padding-left: 25%;
+    padding-right: 25%;
+    
+}
+
+.row{
+    display: flex;
+    
+}
+
+#switch {
+    
+    margin-left: 25%;
+    margin-right: 25%;
+
+}
+
+i{
+    visibility: visible;
+}
+
+a {
+    overflow-wrap: break-word;
+}
+
+td {
+    overflow-wrap: break-word;
+}
+
+#logo {
+    text-align: center;
+    
+}
+
+body {
+    color: white !important;
+    background-color: rgb(39, 37, 37) !important;
+}
+
+nav {
+    color: white !important;
+}
+
+.nav-link {
+    color:white !important;
+}
+
+.navbar-brand{
+    color: white !important;
+}
+
+
+
+.navbar-dark .navbar-toggler-icon {
+    color: white !important;
+}
+
+#resultfield {
+    
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 30px;
+
+}
+
+#dropdownMenu2{
+    font-size: small;
+    
+}
+
+#authors{
+
+    padding-top: 10%;
+    text-align: center ;
+}
+
+#switch{
+    padding-top: 10px;
+    padding-left: 30px;
+}
+
+#authors p{
+    font-size: 100px;
+    font-style: italic;
+}
+
+
+#historyfield{
+    padding-left: 20px;
+    padding-top: 20px;
+    
+}
+

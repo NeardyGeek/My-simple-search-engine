@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CS 355 adimin Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="index.html">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="admin.html">Admin</a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link" href="about.html">about us</a>
+
+                </li>
+
+
+
+            </ul>
+        </div>
+
+    </nav>
+
+
+    <div id="searchfield">
+
+        <div class="input-group mb-3">
+            <input id="inputvalue" type="text" class="form-control" placeholder="type website to scrap" name="url">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button"
+                    onclick="crawlerTrig(); return false">Submit</button>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary" onclick="showIndexHist(); return false">index
+                history</button>
+            <button type="button" class="btn btn-secondary" onclick="showSearchHist(); return false">search
+                history</button>
+        </div>
+
+    </div>
+
+
+    <div id="histfield"></div>
+
+
+
+
+    <script>
+
+
+        function showIndexHist() {
+
+            document.getElementById("histfield").innerHTML = "";
+            var url = " https://www.nothingfornothings.com/history_api.php";
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", indexHistHandler);
+            xhr.responseType = "json";
+            xhr.open("GET", url);
+            xhr.send();
+
+
+
+        }
+
+
+        function showSearchHist() {
+
+            document.getElementById("histfield").innerHTML = "";
+            var url = " https://www.nothingfornothings.com/result_api.php";
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", searchHistHandler);
+            xhr.responseType = "json";
+            xhr.open("GET", url);
+            xhr.send();
+
+
+
+
+        }
+
+        function searchHistHandler() {
+            console.log(this.response.length);
+            console.log(this.response[0].terms);
+
+            var resultinfo = document.getElementById("histfield");
+
+            if (this.status === 200) {
+                var txt = "<div class = 'table-responsive'><table class = 'table'>";
+                txt += "<tr><th>term: </th>";
+                txt += "<th>number of results: </th>";
+                txt += "<th>date of search: </th>";
+                txt += "<th>speed of search: </th></tr>";
+                for (var i = 0; i < this.response.length; i++) {
+
+                    txt += "<tr><td>" + this.response[i].terms + "</td>";
+                    txt += "<td>" + this.response[i].count + "</td>";
+                    txt += "<td>" + this.response[i].searchDate + "</td>";
+                    txt += "<td>" + this.response[i].timeToSearch + "</td></tr>";
+                }
+                resultinfo.innerHTML = txt + "</table></div>";
+
+            } else {
+                resultinfo.innerHTML = "results data unvailable";
+
+
+            }
+        }
+
+
+        function indexHistHandler() {
+
+            console.log(this.response.length);
+            console.log(this.response[0].url);
+            var resultinfo = document.getElementById("histfield");
+
+            if (this.status === 200) {
+                var txt = "<div class = 'table-responsive'><table class = 'table'>";
+                txt += "<tr><th>url: </th>";
+                txt += "<th>title: </th>";
+                txt += "<th>description: </th>";
+                txt += "<th>last modified: </th>";
+                txt += "<th>last indexed: </th>";
+                txt += "<th>speed of indexing: </th></tr>";
+                for (var i = 0; i < this.response.length; i++) {
+
+                    txt += "<tr><td><a target='_blank' href=" + this.response[i].url + ">" + this.response[i].url + "</a></td>";
+                    txt += "<td>" + this.response[i].title + "</td>";
+                    txt += "<td>" + this.response[i].description + "</td>";
+                    txt += "<td>" + this.response[i].lastModified + "</td>";
+                    txt += "<td>" + this.response[i].lastIndexed + "</td>";
+                    txt += "<td>" + this.response[i].timeToIndex + "</td></tr>";
+
+                }
+                resultinfo.innerHTML = txt + "</table></div>";
+
+            } else {
+                resultinfo.innerHTML = "results data unvailable";
+
+
+            }
+        }
+
+
+        function crawlerTrig() {
+
+            var urlScrap = document.getElementById("inputvalue").value;
+            if (validURL(urlScrap)) {
+                var param = "url=" + urlScrap;
+            } else {
+                window.alert("please enter a valid url");
+                location.reload();
+            }
+
+            var url = " https://www.nothingfornothings.com/index_api.php";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+
+
+            xhr.addEventListener("load", test);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            xhr.send(param);
+
+            console.log(url);
+        }
+
+        function test() {
+
+            var resultinfo = document.getElementById("histfield");
+
+            
+            if (this.status === 200) {
+                
+                resultinfo.innerHTML = this.response + " indexing succeed..."
+
+            } else {
+
+                resultinfo.innerHTML = "indexing failed...";
+
+            }
+
+
+        }
+
+
+        function validURL(str) {
+            var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+            return !!pattern.test(str);
+        }
+
+
+
+
+
+
+
+
+
+
+    </Script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
